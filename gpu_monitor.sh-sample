@@ -1,0 +1,7 @@
+#! /usr/bin/zsh
+
+SCR_F=${0:h}
+
+echo $SCR_F
+
+nvidia-smi | $SCR_F/gpu_monitor.py -i - -o ~/tmp/gpu_monitor.log
