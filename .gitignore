@@ -4,6 +4,8 @@
 
 # Inhibit unnecessary updates of custom scripts
 *.sh
+*.gnuplot
+*.png
 
 
 
