@@ -1,3 +1,28 @@
+# Authentication #
+
+[`auth3.py`](./auth3.py) is a python3 avatar of our `auth.py`  functionality. And an example of beautiful coding by [@R. Harish](https://github.com/rharish101) - Thanks.  
+This was posted about 4 months ago, but I was a little loose... :stuck_out_tongue_winking_eye:
+
+```
+08:04 bvr@bvr ~> python -m auth3 -h
+usage: auth3.py [-h] [-u USERNAME] [-p PASSWORD] [-q]
+Authentication script for FortiNet
+optional arguments:
+  -h, --help            show this help message and exit
+  -u USERNAME, --username USERNAME
+                        FortiNet username
+  -p PASSWORD, --password PASSWORD
+                        FortiNet password
+  -q, --quiet           disable verbose output
+```
+
+This can also be seamlessly configured to be used as a command, say authenticate, as follows:
+1. `cp auth3.py ~/.local/bin/authenticate`
+2. `chmod +x ~/.local/bin/authenticate`: Yes, this has been written to be a script; [with a shebang header](./auth3.py#L1)
+3. Add `export PATH=$PATH:~/.local/bin to ~/.profile`, and source `~/.profile`
+4. `authenticate` --- and it works...
+
+
 # GPU Monitor #
 
 This is a GPU server monitor script, to extract values
