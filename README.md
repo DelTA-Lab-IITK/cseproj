@@ -1,3 +1,11 @@
+# NVTOP #
+To install nvtop, download [`Makefile.nvtop`](./Makefile.nvtop), and issue the following commands
+```sh
+make -f Makefile.nvtop
+sudo make -f Makefile.nvtop install
+```
+
+
 # Authentication #
 
 [`auth3.py`](./auth3.py) is a python3 avatar of our `auth.py`  functionality. And an example of beautiful coding by [@R. Harish](https://github.com/rharish101) - Thanks.  
