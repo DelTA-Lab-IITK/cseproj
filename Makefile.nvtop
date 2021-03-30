@@ -9,43 +9,43 @@ ENV_TEMP := /tmp/$(notdir ${ENV_FILE})
 PACKAGES := git cmake libncurses-dev
 
 AWK_SCRIPT := /^PATH=/ { \
-        split ($$0, kv, "\""); \
-        paths=kv[2]; \
-        if (paths !~ /$(subst /,\/,${INSTALL_AT})\/bin/) \
-          paths=sprintf("%s:%s",paths,"${INSTALL_AT}/bin"); \
-        printf("%s\"%s\"\n",kv[1],paths);}
+	split ($$0, kv, "\""); \
+	paths=kv[2]; \
+	if (paths !~ /$(subst /,\/,${INSTALL_AT})\/bin/) \
+	  paths=sprintf("%s:%s",paths,"${INSTALL_AT}/bin"); \
+	printf("%s\"%s\"\n",kv[1],paths);}
 
 
 build : ${SRC_FOLDER}/build
-        cd $< ; make
+	cd $< ; make
 
 ${SRC_FOLDER} :
-        [ -d $@ ] \
-          && { cd $@ ; git pull } \
-          || { \
-            [ -d $(@D) ] || mkdir -p $(@D) ; \
-            git clone 'https://github.com/Syllo/nvtop.git' $@ \
-            }
+	[ -d $@ ] \
+	  && { cd $@ ; git pull } \
+	  || { \
+	    [ -d $(@D) ] || mkdir -p $(@D) ; \
+	    git clone 'https://github.com/Syllo/nvtop.git' $@ \
+	    }
 
 %/build : %
-        [ -d $@ ] || mkdir -p $@
-        $(MAKE) -f $(firstword ${MAKEFILE_LIST}) ensure-packages
-        cd $@ ; \
-          cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_AT} \
+	[ -d $@ ] || mkdir -p $@
+	$(MAKE) -f $(firstword ${MAKEFILE_LIST}) ensure-packages
+	cd $@ ; \
+	  cmake .. -DCMAKE_INSTALL_PREFIX=${INSTALL_AT} \
 
 install : ${SRC_FOLDER}/build
-        cd $< ; make install
-        $(MAKE) -f $(firstword ${MAKEFILE_LIST}) update-environment
+	cd $< ; make install
+	$(MAKE) -f $(firstword ${MAKEFILE_LIST}) update-environment
 
 update-environment :
-        cp ${ENV_FILE} ${ENV_TEMP}
-        gawk '${AWK_SCRIPT}' < ${ENV_TEMP} > ${ENV_FILE}
-        -cat ${ENV_TEMP} | grep -v '^PATH=' >> ${ENV_FILE}
+	cp ${ENV_FILE} ${ENV_TEMP}
+	gawk '${AWK_SCRIPT}' < ${ENV_TEMP} > ${ENV_FILE}
+	-cat ${ENV_TEMP} | grep -v '^PATH=' >> ${ENV_FILE}
 
 ensure-packages : ${PACKAGES:%=${SRC_FOLDER}/build/ensure-package-%}
 
 ${SRC_FOLDER}/build/ensure-package-% :
-        aptitude search "~i$*" || sudo apt install $*
+	aptitude search "~i$*" || sudo apt install $*
 
 clean :
-        rm -rf ${SRC_FOLDER}/build
+	rm -rf ${SRC_FOLDER}/build
